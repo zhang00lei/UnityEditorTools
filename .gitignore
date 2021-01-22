@@ -1,5 +1,7 @@
-/Temp
-/Library
-/.idea
-/Logs
-/obj
+Library
+Logs
+obj
+Temp
+/UnityEditorTools/Assembly-CSharp-Editor.csproj
+/UnityEditorTools/Assembly-CSharp.csproj
+.idea
