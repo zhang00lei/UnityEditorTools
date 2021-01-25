@@ -83,4 +83,17 @@ public static class CollectionExtension
 
         return default;
     }
+    
+    public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
+    {
+        if (action == null)
+        {
+            return;
+        }
+
+        foreach (T element in source)
+        {
+            action(element);
+        }
+    }
 }
