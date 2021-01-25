@@ -192,7 +192,7 @@ public class UGUIEditor
         emptyObj.name = "GameObject";
         emptyObj.transform.SetParent(obj.transform);
         RectTransformZero(emptyObj.transform.RectTransform());
-        emptyObj.layer = UILayer; 
+        emptyObj.layer = UILayer;
     }
 
     private static void RectTransformZero(RectTransform rectTransform)

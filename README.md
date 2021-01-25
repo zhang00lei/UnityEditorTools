@@ -1,13 +1,15 @@
 # Unity编辑器工具整理
 ##### 注：大部分代码在Editor目录下，第三方扩展工具在Tools目录下
-### 其他编辑器小工具
+### 其他编辑器小工具(Editor/OtherTools)
 1. 一键启动、停止unity编辑器
 2. 清空Console日志
-### TortoiseGit提交工具
+### TortoiseGit提交工具(Editor/TortoiseGit)
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/14271390.html
-### 获取Git提交日志
+### 获取Git提交日志(Editor/GitLog)
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/14309409.html
-### 切割图片非透明区域
+### 切割图片非透明区域(Editor/SplitImgTools)
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/14312415.html
-### UGUI创建控件快捷键、控件微调快捷键
+### UGUI创建控件快捷键、控件微调快捷键(Editor/UGUIEditor)
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/14313618.html
+### Unity导入贴图自动压缩(Editor/TextureImportSetting)
+用法参考：https://www.cnblogs.com/Yellow0-0River/p/14271191.html
