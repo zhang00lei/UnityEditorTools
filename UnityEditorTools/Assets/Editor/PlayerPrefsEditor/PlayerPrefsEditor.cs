@@ -127,6 +127,7 @@ public class PlayerPrefsEditor : EditorWindow
         prefs = PlayerPrefsExtension.GetAll().ToList();
         for (int i = 0; i < prefs.Count; i++)
         {
+            //过滤unity默认保存的信息
             if (prefs[i].Key.ToLower().StartsWith("unity"))
             {
                 prefs.RemoveAt(i);
