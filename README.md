@@ -1,5 +1,5 @@
 # Unity编辑器工具整理
-##### 注：大部分代码在Editor目录下，第三方扩展工具在Tools目录下
+##### 注：大部分代码在Editor目录下，第三方扩展工具在Tools目录下。在unity 2018.4.10f1版本下开发测试
 ### [其他编辑器小工具](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/OtherTools)
 1. 一键启动、停止unity编辑器
 2. 清空Console日志
