@@ -15,3 +15,4 @@
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/14271191.html
 ### [查看Editor下PlayerPrefs信息](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/PlayerPrefsEditor)
 用法参考：
+### [Unity查找资源引用](https://github.com/blueberryzzz/ReferenceFinder)
