@@ -3,6 +3,7 @@
 ### [其他编辑器小工具](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/OtherTools)
 1. 一键启动、停止unity编辑器
 2. 清空Console日志
+3. 删除空目录([参考这里](https://networm.me/2013/05/23/remove-empty-directories/))
 ### [TortoiseGit提交工具](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/TortoiseGit)
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/14271390.html
 ### [获取Git提交日志](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/GitLog)
@@ -16,3 +17,4 @@
 ### [查看Editor下PlayerPrefs信息](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/PlayerPrefsEditor)
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/14325826.html
 ### [Unity查找资源引用](https://github.com/blueberryzzz/ReferenceFinder)
+### Unity集成BMFont工具

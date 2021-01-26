@@ -2,7 +2,7 @@
 using System.Reflection;
 using UnityEditor;
 
-public class CTools
+public static class CTools
 {
     [MenuItem("Tools/RunOrStop _F5")]
     private static void StartAPP()
