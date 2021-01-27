@@ -17,4 +17,5 @@
 ### [查看Editor下PlayerPrefs信息](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/PlayerPrefsEditor)
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/14325826.html
 ### [Unity查找资源引用](https://github.com/blueberryzzz/ReferenceFinder)
-### Unity集成BMFont工具
+### [Unity集成BMFont工具](https://github.com/blueberryzzz/BMFontTools)
+用法参考：https://www.cnblogs.com/Yellow0-0River/p/14334365.html

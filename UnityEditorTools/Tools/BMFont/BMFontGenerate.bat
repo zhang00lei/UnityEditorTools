@@ -1,0 +1,1 @@
+bmfont.exe -c %1  -o %2  
