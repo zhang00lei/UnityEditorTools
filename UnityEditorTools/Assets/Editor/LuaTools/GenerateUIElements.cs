@@ -13,8 +13,8 @@ public class GenerateUIElements : EditorWindow
 
     private struct TypeInfoStruct
     {
-        public readonly string annotationName;
-        public readonly string fieldType;
+        public string annotationName;
+        public string fieldType;
 
         public TypeInfoStruct(string annotationName, string fieldType)
         {
@@ -23,13 +23,13 @@ public class GenerateUIElements : EditorWindow
         }
     }
 
-    private static readonly Dictionary<string, TypeInfoStruct> typeInfoStructDict = new Dictionary<string, TypeInfoStruct>
+    private static Dictionary<string, TypeInfoStruct> typeInfoStructDict = new Dictionary<string, TypeInfoStruct>()
     {
         {"Img", new TypeInfoStruct("UnityEngine.UI.Image", "CS.UnityEngine.UI.Image")},
         {"Text", new TypeInfoStruct("TMPro.TextMeshProUGUI", "CS.TMPro.TextMeshProUGUI")},
         {"Btn", new TypeInfoStruct("UnityEngine.UI.Button", "CS.UnityEngine.UI.Button")},
         {"Trans", new TypeInfoStruct("UnityEngine.Transform", "CS.UnityEngine.Transform")},
-        {"Obj", new TypeInfoStruct("UnityEngine.GameObject", "CS.UnityEngine.Transform")}
+        {"Obj", new TypeInfoStruct("UnityEngine.GameObject", "CS.UnityEngine.Transform")},
     };
 
     [MenuItem("GameObject/GenUILuaCode", priority = 30)]
@@ -53,7 +53,6 @@ public class GenerateUIElements : EditorWindow
         savePathInfo = assetImporter.userData;
         if (string.IsNullOrEmpty(savePathInfo))
         {
-            //Lua文件保存路径
             savePathInfo = $"LuaScripts/UI/{transform.name}/View/{transform.name}ViewElements.lua";
             assetImporter.userData = savePathInfo;
             assetImporter.SaveAndReimport();
@@ -96,6 +95,7 @@ public class GenerateUIElements : EditorWindow
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("---this file is generate by tools,do not modify it.");
             sb.AppendLine($"---@class {fileName}");
+            sb.AppendLine($"local {fileName} = {{}}");
             sb.AppendLine("---@field public transform UnityEngine.Transform");
             sb.AppendLine("---@field public gameObject UnityEngine.GameObject");
             foreach (string fieldInfo in fieldInfoList)
@@ -116,7 +116,7 @@ public class GenerateUIElements : EditorWindow
                 string fieldType = GetFieldType(fieldInfo, false);
                 string annotionName = GetFieldType(fieldInfo);
                 sb.Append(
-                    $"{spacing}self.{fieldName} = UIUtil.FindComponent(transform, typeof({fieldType}) \"{fieldInfo}\")");
+                    $"{spacing}self.{fieldName} = UIUtil.FindComponent(transform, typeof({fieldType}), \"{fieldInfo}\")");
                 if (annotionName.Contains("GameObject"))
                 {
                     sb.Append(".gameObject");
@@ -193,8 +193,7 @@ public class GenerateUIElements : EditorWindow
     private static void Open()
     {
         GenerateUIElements window = GetWindow<GenerateUIElements>();
-        window.position = new Rect(Screen.currentResolution.width / 2 - 250, Screen.currentResolution.height / 2 - 30,
-            500, 60);
+        window.position = new Rect(Screen.currentResolution.width / 2-250, Screen.currentResolution.height / 2-30, 500, 60);
         window.maxSize = new Vector2(500, 60);
         window.minSize = new Vector2(500, 60);
         window.Show();
