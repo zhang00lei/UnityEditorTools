@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class TextureImportSetting : AssetPostprocessor
 {
+    private const string AutoSetImport = "AutoSetImport";
+
     private static readonly int[] MaxSizes = {32, 64, 128, 256, 512, 1024, 2048, 4096, 8192};
 
     private struct TextureImporterInfo
@@ -27,11 +29,8 @@ public class TextureImportSetting : AssetPostprocessor
     private readonly Dictionary<string, TextureImporterInfo> _textureImporterFormatsDict =
         new Dictionary<string, TextureImporterInfo>
         {
-            {"Bonus", new TextureImporterInfo(TextureImporterFormat.ASTC_RGBA_6x6, "Bonus")},
-            {"Comm", new TextureImporterInfo(TextureImporterFormat.RGBA32, "Comm")},
-            {"Events", new TextureImporterInfo(TextureImporterFormat.ASTC_RGB_6x6, "Events")},
-            {"StorePack", new TextureImporterInfo(TextureImporterFormat.ASTC_RGB_6x6, "StorePack")},
-            {"Store.Bg", new TextureImporterInfo(TextureImporterFormat.ASTC_RGB_8x8, "Store.Bg")}
+            {"Game", new TextureImporterInfo(TextureImporterFormat.ASTC_RGBA_6x6, "Game")},
+            {"Comm", new TextureImporterInfo(TextureImporterFormat.ASTC_RGBA_6x6, "Comm")},
         };
 
     private static readonly string DEFAULTS_KEY = "DEFAULTS_DONE";
@@ -51,10 +50,9 @@ public class TextureImportSetting : AssetPostprocessor
         }
     }
 
-    private static bool autoSetImport = true;
-
     private void OnPreprocessTexture()
     {
+        bool autoSetImport = EditorPrefs.GetBool(AutoSetImport, false);
         if (!autoSetImport)
         {
             return;
@@ -72,7 +70,7 @@ public class TextureImportSetting : AssetPostprocessor
             return;
         }
 
-        if (assetPath.IndexOf("Bundles", StringComparison.Ordinal) < 0)
+        if (assetPath.IndexOf("AssetsPackage", StringComparison.Ordinal) < 0)
         {
             return;
         }
@@ -118,7 +116,7 @@ public class TextureImportSetting : AssetPostprocessor
         textureImporterPlatformSettings.overridden = true;
         textureImporterPlatformSettings.compressionQuality = 50;
 #if UNITY_ANDROID
-            textureImporterPlatformSettings.name = "Android";
+        textureImporterPlatformSettings.name = "Android";
 #elif UNITY_IOS
             textureImporterPlatformSettings.name = "iPhone";
 #endif
@@ -167,7 +165,6 @@ public class TextureImportSetting : AssetPostprocessor
         [MenuItem("Assets/FormatIosTexture")]
         public static void FormatAllIosTexture()
         {
-            autoSetImport = false;
             Texture2D[] textures = Selection.GetFiltered<Texture2D>(SelectionMode.DeepAssets);
             foreach (Texture2D texture2D in textures)
             {
@@ -186,8 +183,13 @@ public class TextureImportSetting : AssetPostprocessor
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            autoSetImport = true;
-
         }
 #endif
+    [MenuItem("Tools/AutoSetImport")]
+    public static void SetImport()
+    {
+        bool autoSetImport = EditorPrefs.GetBool(AutoSetImport);
+        EditorPrefs.SetBool(AutoSetImport, !autoSetImport);
+        Debug.Log("CurrentAutoSetImport:" + !autoSetImport);
+    }
 }
