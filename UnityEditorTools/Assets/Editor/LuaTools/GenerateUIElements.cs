@@ -8,29 +8,46 @@ using UnityEngine;
 
 public class GenerateUIElements : EditorWindow
 {
+    private const string SPACING = "    ";
     private static string savePathInfo;
-    private static Action generateLuaCode;
+    private static Action genUnityComponentCode;
+    private static Action genLuaComponentCode;
 
-    private struct TypeInfoStruct
+    private class ComponentTypeInfo
     {
+        /// <summary>
+        /// 注解
+        /// </summary>
         public string annotationName;
+
+        /// <summary>
+        /// 字段类型
+        /// </summary>
         public string fieldType;
 
-        public TypeInfoStruct(string annotationName, string fieldType)
+        /// <summary>
+        /// Lua组件名字
+        /// </summary>
+        public string luaComponentName;
+
+        public ComponentTypeInfo(string annotationName, string fieldType, string luaComponentName)
         {
             this.annotationName = annotationName;
             this.fieldType = fieldType;
+            this.luaComponentName = luaComponentName;
         }
     }
 
-    private static Dictionary<string, TypeInfoStruct> typeInfoStructDict = new Dictionary<string, TypeInfoStruct>()
-    {
-        {"Img", new TypeInfoStruct("UnityEngine.UI.Image", "CS.UnityEngine.UI.Image")},
-        {"Text", new TypeInfoStruct("TMPro.TextMeshProUGUI", "CS.TMPro.TextMeshProUGUI")},
-        {"Btn", new TypeInfoStruct("UnityEngine.UI.Button", "CS.UnityEngine.UI.Button")},
-        {"Trans", new TypeInfoStruct("UnityEngine.Transform", "CS.UnityEngine.Transform")},
-        {"Obj", new TypeInfoStruct("UnityEngine.GameObject", "CS.UnityEngine.Transform")},
-    };
+    private static Dictionary<string, ComponentTypeInfo> typeInfoStructDict =
+        new Dictionary<string, ComponentTypeInfo>()
+        {
+            {"Img", new ComponentTypeInfo("UnityEngine.UI.Image", "CS.UnityEngine.UI.Image", "UIImage")},
+            {"Text", new ComponentTypeInfo("TMPro.TextMeshProUGUI", "CS.TMPro.TextMeshProUGUI", "UITextMeshProUGUI")},
+            {"Btn", new ComponentTypeInfo("UnityEngine.UI.Button", "CS.UnityEngine.UI.Button", "UIButton")},
+            {"Trans", new ComponentTypeInfo("UnityEngine.Transform", "CS.UnityEngine.Transform", "")},
+            {"Obj", new ComponentTypeInfo("UnityEngine.GameObject", "CS.UnityEngine.Transform", "")},
+            {"Input", new ComponentTypeInfo("UnityEngine.UI.Input", "CS.UnityEngine.UI.Input", "UIInput")},
+        };
 
     [MenuItem("GameObject/GenUILuaCode", priority = 30)]
     public static void GetSelect()
@@ -60,63 +77,72 @@ public class GenerateUIElements : EditorWindow
 
         List<string> transPathList = new List<string>();
         GetAllChild(transform, string.Empty, transPathList);
-        string fileName = transform.name + "ViewElements";
 
         Open();
-        generateLuaCode = () =>
-        {
-            string luaCode = GenLuaCode(fileName, transPathList);
-            assetImporter.userData = savePathInfo;
-            assetImporter.SaveAndReimport();
-            if (!string.IsNullOrEmpty(luaCode))
-            {
-                string savePath = Path.Combine(Application.dataPath, savePathInfo);
-                File.WriteAllText(savePath, luaCode);
-                AssetDatabase.Refresh();
-            }
-        };
+        List<string> componentList = FilterComponent(transPathList);
+        genUnityComponentCode = () => { GenCode(transform.name, componentList, assetImporter, false); };
+        genLuaComponentCode = () => { GenCode(transform.name, componentList, assetImporter, true); };
     }
 
-    private static string GenLuaCode(string fileName, List<string> transPathList)
+    private static void GenCode(string fileName, List<string> transPathList, AssetImporter assetImporter,
+        bool isGenLuaComponent)
     {
-        string spacing = "    ";
+        string luaCode = isGenLuaComponent
+            ? GenLuaComponentCode(fileName, transPathList)
+            : GenUnityComponentCode(fileName, transPathList);
+        assetImporter.userData = savePathInfo;
+        assetImporter.SaveAndReimport();
+        if (!string.IsNullOrEmpty(luaCode))
+        {
+            string savePath = Path.Combine(Application.dataPath, savePathInfo);
+            File.WriteAllText(savePath, luaCode);
+            AssetDatabase.Refresh();
+        }
+    }
+
+    private static List<string> FilterComponent(List<string> transPathList)
+    {
         List<string> fieldInfoList = new List<string>();
         foreach (var pathStr in transPathList)
         {
-            string typeTemp = GetFieldType(pathStr);
-            if (!string.IsNullOrEmpty(typeTemp))
+            var typeInfo = GetComponentTypeInfo(pathStr);
+            if (typeInfo != null)
             {
                 fieldInfoList.Add(pathStr);
             }
         }
 
+        return fieldInfoList;
+    }
+
+    private static string GenUnityComponentCode(string fileName, List<string> fieldInfoList)
+    {
+        fileName += "ViewElements";
         if (fieldInfoList.Count != 0)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("---this file is generate by tools,do not modify it.");
             sb.AppendLine($"---@class {fileName}");
             sb.AppendLine($"local {fileName} = {{}}");
-            sb.AppendLine("---@field public transform UnityEngine.Transform");
-            sb.AppendLine("---@field public gameObject UnityEngine.GameObject");
-            foreach (string fieldInfo in fieldInfoList)
-            {
-                string fieldName = GetFieldName(fieldInfo);
-                string fieldType = GetFieldType(fieldInfo);
-                sb.AppendLine($"---@field public {fieldName} {fieldType}");
-            }
-
             sb.AppendLine("---Init 初始化UI元素");
             sb.AppendLine("---@param transform UnityEngine.Transform");
             sb.AppendLine($"function {fileName}:Init(transform)");
-            sb.AppendLine($"{spacing}self.transform = transform");
-            sb.AppendLine($"{spacing}self.gameObject = transform.gameObject");
+            sb.AppendLine($"{SPACING}self.transform = transform");
+            sb.AppendLine($"{SPACING}self.gameObject = transform.gameObject");
             foreach (string fieldInfo in fieldInfoList)
             {
                 string fieldName = GetFieldName(fieldInfo);
-                string fieldType = GetFieldType(fieldInfo, false);
-                string annotionName = GetFieldType(fieldInfo);
+                ComponentTypeInfo componentTypeInfo = GetComponentTypeInfo(fieldInfo);
+                if (componentTypeInfo == null)
+                {
+                    continue;
+                }
+
+                string fieldType = componentTypeInfo.fieldType;
+                string annotionName = componentTypeInfo.annotationName;
+                sb.AppendLine($"{SPACING}---@type {annotionName}");
                 sb.Append(
-                    $"{spacing}self.{fieldName} = UIUtil.FindComponent(transform, typeof({fieldType}), \"{fieldInfo}\")");
+                    $"{SPACING}self.{fieldName} = UIUtil.FindComponent(transform, typeof({fieldType}), \"{fieldInfo}\")");
                 if (annotionName.Contains("GameObject"))
                 {
                     sb.Append(".gameObject");
@@ -128,18 +154,25 @@ public class GenerateUIElements : EditorWindow
             sb.AppendLine("end");
             sb.AppendLine();
             sb.AppendLine($"function {fileName}:OnDestroy()");
-            sb.AppendLine($"{spacing}self.transform = nil");
-            sb.AppendLine($"{spacing}self.gameObject = nil");
+            sb.AppendLine($"{SPACING}self.transform = nil");
+            sb.AppendLine($"{SPACING}self.gameObject = nil");
             foreach (string fieldInfo in fieldInfoList)
             {
                 string fieldName = GetFieldName(fieldInfo);
-                string fieldType = GetFieldType(fieldInfo, false);
-                if (fieldType.EndsWith("Button"))
+                var componentTypeInfo = GetComponentTypeInfo(fieldInfo);
+                if (componentTypeInfo == null)
                 {
-                    sb.AppendLine($"{spacing}self.{fieldName}.onClick:RemoveAllListeners()");
+                    continue;
                 }
 
-                sb.AppendLine($"{spacing}self.{fieldName} = nil");
+                string fieldType = componentTypeInfo.annotationName;
+
+                if (fieldType.EndsWith("Button"))
+                {
+                    sb.AppendLine($"{SPACING}self.{fieldName}.onClick:RemoveAllListeners()");
+                }
+
+                sb.AppendLine($"{SPACING}self.{fieldName} = nil");
             }
 
             sb.AppendLine("end");
@@ -151,28 +184,73 @@ public class GenerateUIElements : EditorWindow
         return string.Empty;
     }
 
+    private static string GenLuaComponentCode(string fileName, List<string> fieldInfoList)
+    {
+        string saveFileName = fileName + "ViewElements";
+        if (fieldInfoList.Count == 0)
+        {
+            return string.Empty;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine("---this file is generate by tools,do not modify it.");
+        sb.AppendLine($"---@class {saveFileName}");
+        sb.AppendLine($"local {saveFileName} = {{}}");
+        sb.AppendLine("---Init 初始化UI元素");
+        sb.AppendLine("---@param transform UnityEngine.Transform");
+        sb.AppendLine($"---@param tableInfo {fileName}View");
+        sb.AppendLine($"function {saveFileName}:Init(transform, tableInfo)");
+        foreach (string fieldInfo in fieldInfoList)
+        {
+            string fieldName = GetFieldName(fieldInfo);
+            ComponentTypeInfo componentTypeInfo = GetComponentTypeInfo(fieldInfo);
+            if (componentTypeInfo == null)
+            {
+                continue;
+            }
+
+            if (!string.IsNullOrEmpty(componentTypeInfo.luaComponentName))
+            {
+                sb.AppendLine($"{SPACING}---@type {componentTypeInfo.luaComponentName}");
+                sb.AppendLine(
+                    $"{SPACING}tableInfo.{fieldName} = tableInfo:AddComponent({componentTypeInfo.luaComponentName}, \"{fieldInfo}\")");
+            }
+            else
+            {
+                sb.AppendLine($"{SPACING}---@type {componentTypeInfo.annotationName}");
+                sb.Append(
+                    $"{SPACING}tableInfo.{fieldName} = UIUtil.FindComponent(transform ,typeof({componentTypeInfo.fieldType}), \"{fieldInfo}\")");
+                if (componentTypeInfo.annotationName.Contains("GameObject"))
+                {
+                    sb.Append(".gameObject");
+                }
+
+                sb.AppendLine();
+            }
+        }
+
+        sb.AppendLine("end");
+        sb.AppendLine($"\nreturn {saveFileName}");
+        return sb.ToString();
+    }
+
     private static string GetFieldName(string fieldPath)
     {
         string[] arrTemp = fieldPath.Split('/');
         return arrTemp[arrTemp.Length - 1];
     }
 
-    private static string GetFieldType(string path, bool isAnnotiationName = true)
+    private static ComponentTypeInfo GetComponentTypeInfo(string path)
     {
         foreach (var keyValuePair in typeInfoStructDict)
         {
             if (path.EndsWith(keyValuePair.Key))
             {
-                if (isAnnotiationName)
-                {
-                    return keyValuePair.Value.annotationName;
-                }
-
-                return keyValuePair.Value.fieldType;
+                return keyValuePair.Value;
             }
         }
 
-        return string.Empty;
+        return null;
     }
 
     private static void GetAllChild(Transform trans, string path, List<string> transPathList)
@@ -193,7 +271,8 @@ public class GenerateUIElements : EditorWindow
     private static void Open()
     {
         GenerateUIElements window = GetWindow<GenerateUIElements>();
-        window.position = new Rect(Screen.currentResolution.width / 2-250, Screen.currentResolution.height / 2-30, 500, 60);
+        window.position = new Rect(Screen.currentResolution.width / 2 - 250, Screen.currentResolution.height / 2 - 30,
+            500, 50);
         window.maxSize = new Vector2(500, 60);
         window.minSize = new Vector2(500, 60);
         window.Show();
@@ -205,15 +284,24 @@ public class GenerateUIElements : EditorWindow
         EditorGUILayout.LabelField("SavePath:", GUILayout.MaxWidth(65));
         savePathInfo = EditorGUILayout.TextField(savePathInfo);
         EditorGUILayout.EndHorizontal();
-        if (GUILayout.Button("Confirm"))
+        GUILayout.Space(10);
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("GenUnityComponent"))
         {
-            generateLuaCode?.Invoke();
+            genUnityComponentCode?.Invoke();
         }
+
+        if (GUILayout.Button("GenLuaComponent"))
+        {
+            genLuaComponentCode?.Invoke();
+        }
+
+        GUILayout.EndHorizontal();
     }
 
     private void OnDisable()
     {
         savePathInfo = string.Empty;
-        generateLuaCode = null;
+        genUnityComponentCode = null;
     }
 }
