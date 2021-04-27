@@ -43,6 +43,7 @@ public class GenerateUIElements : EditorWindow
         {
             {"Img", new ComponentTypeInfo("UnityEngine.UI.Image", "CS.UnityEngine.UI.Image", "UIImage")},
             {"Text", new ComponentTypeInfo("TMPro.TextMeshProUGUI", "CS.TMPro.TextMeshProUGUI", "UITextMeshProUGUI")},
+            {"Txt", new ComponentTypeInfo("UnityEngine.UI.Text", "CS.UnityEngine.UI.Image", "UIText")},
             {"Btn", new ComponentTypeInfo("UnityEngine.UI.Button", "CS.UnityEngine.UI.Button", "UIButton")},
             {"Trans", new ComponentTypeInfo("UnityEngine.Transform", "CS.UnityEngine.Transform", "")},
             {"Obj", new ComponentTypeInfo("UnityEngine.GameObject", "CS.UnityEngine.Transform", "")},
@@ -224,7 +225,7 @@ public class GenerateUIElements : EditorWindow
             {
                 sb.AppendLine($"{SPACING}---@type {componentTypeInfo.annotationName}");
                 sb.Append(
-                    $"{SPACING}tableInfo.{fieldName} = UIUtil.FindComponent(transform ,typeof({componentTypeInfo.fieldType}), \"{fieldInfo}\")");
+                    $"{SPACING}tableInfo.{fieldName} = UIUtil.FindComponent(tableInfo.transform ,typeof({componentTypeInfo.fieldType}), \"{fieldInfo}\")");
                 if (componentTypeInfo.annotationName.Contains("GameObject"))
                 {
                     sb.Append(".gameObject");
