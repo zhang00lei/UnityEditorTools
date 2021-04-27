@@ -19,7 +19,7 @@
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/14325826.html
 ### [Unity查找资源引用](https://github.com/blueberryzzz/ReferenceFinder)
 用法参考：https://github.com/blueberryzzz/ReferenceFinder
-### [Unity集成BMFont工具](https://github.com/blueberryzzz/BMFontTools)
+### [Unity集成BMFont工具](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/BMFontTools)
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/14334365.html
 ### [Unity生成Lua代码](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/LuaTools)
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/14385801.html
