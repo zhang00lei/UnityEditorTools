@@ -46,7 +46,13 @@ public class GenerateUIElements : EditorWindow
             {"Btn", new ComponentTypeInfo("UnityEngine.UI.Button", "CS.UnityEngine.UI.Button", "UIButton")},
             {"Trans", new ComponentTypeInfo("UnityEngine.Transform", "CS.UnityEngine.Transform", "")},
             {"Obj", new ComponentTypeInfo("UnityEngine.GameObject", "CS.UnityEngine.Transform", "")},
-            {"Input", new ComponentTypeInfo("UnityEngine.UI.Input", "CS.UnityEngine.UI.Input", "UIInput")},
+            {"Input", new ComponentTypeInfo("UnityEngine.UI.InputField", "CS.UnityEngine.UI.InputField", "UIInput")},
+            {"Slider", new ComponentTypeInfo("UnityEngine.UI.Slider", "CS.nityEngine.UI.Slider", "UISlider")},
+            {
+                "Ske",
+                new ComponentTypeInfo("Spine.Unity.SkeletonGraphic", "CS.Spine.Unity.SkeletonGraphic",
+                    "UISkeletonGraphic")
+            }
         };
 
     [MenuItem("GameObject/GenUILuaCode", priority = 30)]
@@ -197,9 +203,8 @@ public class GenerateUIElements : EditorWindow
         sb.AppendLine($"---@class {saveFileName}");
         sb.AppendLine($"local {saveFileName} = {{}}");
         sb.AppendLine("---Init 初始化UI元素");
-        sb.AppendLine("---@param transform UnityEngine.Transform");
         sb.AppendLine($"---@param tableInfo {fileName}View");
-        sb.AppendLine($"function {saveFileName}:Init(transform, tableInfo)");
+        sb.AppendLine($"function {saveFileName}:Init(tableInfo)");
         foreach (string fieldInfo in fieldInfoList)
         {
             string fieldName = GetFieldName(fieldInfo);
@@ -244,7 +249,9 @@ public class GenerateUIElements : EditorWindow
     {
         foreach (var keyValuePair in typeInfoStructDict)
         {
-            if (path.EndsWith(keyValuePair.Key))
+            string[] objectNames = path.Split('/');
+            string objectName = objectNames[objectNames.Length - 1];
+            if (path.EndsWith(keyValuePair.Key) && !objectName.Equals(keyValuePair.Key))
             {
                 return keyValuePair.Value;
             }
