@@ -53,7 +53,8 @@ public class GenerateUIElements : EditorWindow
                 "Ske",
                 new ComponentTypeInfo("Spine.Unity.SkeletonGraphic", "CS.Spine.Unity.SkeletonGraphic",
                     "UISkeletonGraphic")
-            }
+            },
+            {"Tog", new ComponentTypeInfo("UnityEngine.UI.Toggle", "CS.UnityEngine.UI.Toggle", "")}
         };
 
     [MenuItem("GameObject/GenUILuaCode", priority = 30)]
@@ -236,6 +237,22 @@ public class GenerateUIElements : EditorWindow
         }
 
         sb.AppendLine("end");
+        sb.AppendLine();
+        sb.AppendLine($"function {saveFileName}:Destroy(tableInfo)");
+
+        foreach (string fieldInfo in fieldInfoList)
+        {
+            string fieldName = GetFieldName(fieldInfo);
+            var componentTypeInfo = GetComponentTypeInfo(fieldInfo);
+            if (componentTypeInfo == null)
+            {
+                continue;
+            }
+
+            sb.AppendLine($"{SPACING}tableInfo.{fieldName} = nil");
+        }
+        sb.AppendLine("end");
+
         sb.AppendLine($"\nreturn {saveFileName}");
         return sb.ToString();
     }
