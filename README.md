@@ -23,3 +23,5 @@
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/14334365.html
 ### [Unity生成Lua代码](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/LuaTools)
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/14385801.html
+### [Excel生成lua配置表](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/ExcelToLua)
+用法参考：https://www.cnblogs.com/Yellow0-0River/p/14744244.html

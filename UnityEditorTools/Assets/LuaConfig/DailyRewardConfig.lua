@@ -1,34 +1,30 @@
 ---@class DailyRewardConfig
 ---@field id number @id对应奖励id
----@field dropid number @掉落id
+---@field numVal number @number值
+---@field booleanVal boolean @boolean值
+---@field stringVal string @string值
+---@field tableVal table @table值
 local DailyRewardConfig = {
     [1] = {
         id = 1,
-        dropid = 201,
+        numVal = 1,
+        booleanVal = True,
+        stringVal = "helloworld",
+        tableVal = {id=1,name="zhangsan"},
     },
     [2] = {
         id = 2,
-        dropid = 202,
+        numVal = 2,
+        booleanVal = True,
+        stringVal = "helloworld",
+        tableVal = {id=2,name="zhangsan"},
     },
     [3] = {
         id = 3,
-        dropid = 203,
-    },
-    [4] = {
-        id = 4,
-        dropid = 204,
-    },
-    [5] = {
-        id = 5,
-        dropid = 205,
-    },
-    [6] = {
-        id = 6,
-        dropid = 206,
-    },
-    [7] = {
-        id = 7,
-        dropid = 207,
-    },
+        numVal = 3,
+        booleanVal = False,
+        stringVal = "helloworld",
+        tableVal = {id=3,name="zhangsan"},
+    }
 }
 return DailyRewardConfig
