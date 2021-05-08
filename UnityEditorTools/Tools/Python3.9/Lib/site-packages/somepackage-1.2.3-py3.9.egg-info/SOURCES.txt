@@ -1,0 +1,13 @@
+LICENSE
+MANIFEST.in
+README.rst
+setup.cfg
+setup.py
+somepackage/__init__.py
+somepackage/module1.py
+somepackage/module2.py
+somepackage/version.py
+somepackage.egg-info/PKG-INFO
+somepackage.egg-info/SOURCES.txt
+somepackage.egg-info/dependency_links.txt
+somepackage.egg-info/top_level.txt
