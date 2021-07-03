@@ -27,4 +27,4 @@
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/14744244.html
 ### [iOS、Android震动封装](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Script/VibrationUtil)
 ### [UI多语言工具封装](https://github.com/zhang00lei/UnityEditorTools/blob/main/UnityEditorTools/Assets/Script/UITextLocalization.cs)
-用法参考：
+用法参考：https://www.cnblogs.com/Yellow0-0River/p/14966725.html

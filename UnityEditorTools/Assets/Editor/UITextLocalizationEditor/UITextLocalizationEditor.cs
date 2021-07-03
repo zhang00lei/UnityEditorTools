@@ -12,7 +12,7 @@ public class UITextLocalizationEditor : Editor
     private Vector3 scrollPos = Vector2.zero;
 
     private GUIContent guiContentTitle =
-        new GUIContent("Drag TextMeshProUGUI here from Hierarchy view to get the object");
+        new GUIContent("Drag Text here from Hierarchy view to get the object");
 
 
     private void OnEnable()
