@@ -23,6 +23,8 @@
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/14334365.html
 ### [Unity生成Lua代码](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/LuaTools)
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/14385801.html
+### [Unity生成Lua代码升级版](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/UIElementsGenerateEditor)
+用法参考: https://www.cnblogs.com/Yellow0-0River/p/15341993.html
 ### [Excel生成lua配置表](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/ExcelToLua)
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/14744244.html
 ### [iOS、Android震动封装](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Script/VibrationUtil)
