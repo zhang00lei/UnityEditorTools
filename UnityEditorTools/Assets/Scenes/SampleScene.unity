@@ -521,7 +521,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1323838078}
-  - component: {fileID: 1323838079}
   - component: {fileID: 1323838080}
   m_Layer: 5
   m_Name: UISetting
@@ -553,25 +552,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1323838079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1323838077}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad09d369c916c934e86eaec268f55f3e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  datas:
-  - text: {fileID: 2067390090}
-    langId: 0
-  - text: {fileID: 1143734779}
-    langId: 0
-  - text: {fileID: 1763771708}
-    langId: 0
 --- !u!114 &1323838080
 MonoBehaviour:
   m_ObjectHideFlags: 0
