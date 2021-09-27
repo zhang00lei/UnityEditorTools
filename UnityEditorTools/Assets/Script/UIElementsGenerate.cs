@@ -13,6 +13,7 @@ public enum ReferenceType
     UISlider,
     UIInput,
     Animator,
+    UICanvas,
 }
 
 [Serializable]

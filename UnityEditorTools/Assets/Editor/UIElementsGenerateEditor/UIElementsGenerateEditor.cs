@@ -31,7 +31,7 @@ public class UIElementsGenerateEditor : Editor
         new Dictionary<ReferenceType, ComponentInfo>
         {
             {ReferenceType.GameObject, new ComponentInfo("UnityEngine.GameObject", typeof(GameObject))},
-            {ReferenceType.UIText, new ComponentInfo("UnityEngine.GameObject", typeof(Text))},
+            {ReferenceType.UIText, new ComponentInfo("UIText", typeof(Text))},
             {ReferenceType.UITextMeshProUGUI, new ComponentInfo("UITextMeshProUGUI", typeof(TextMeshProUGUI))},
             {ReferenceType.UIButton, new ComponentInfo("UIButton", typeof(Button))},
             {ReferenceType.UIImage, new ComponentInfo("UIImage", typeof(Image))},
@@ -39,6 +39,7 @@ public class UIElementsGenerateEditor : Editor
             {ReferenceType.UIInput, new ComponentInfo("UIInput", typeof(InputField))},
             {ReferenceType.Animator, new ComponentInfo("UnityEngine.Animator", typeof(Animator))},
             {ReferenceType.Transform, new ComponentInfo("UnityEngine.Transform", typeof(Transform))},
+            {ReferenceType.UICanvas, new ComponentInfo("UICanvas", typeof(Canvas))},
         };
 
     private void OnEnable()
