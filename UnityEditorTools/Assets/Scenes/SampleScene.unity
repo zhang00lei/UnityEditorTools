@@ -522,6 +522,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1323838078}
   - component: {fileID: 1323838079}
+  - component: {fileID: 1323838080}
   m_Layer: 5
   m_Name: UISetting
   m_TagString: Untagged
@@ -571,6 +572,29 @@ MonoBehaviour:
     langId: 0
   - text: {fileID: 1763771708}
     langId: 0
+--- !u!114 &1323838080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1323838077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e55a18ff4821fd64da1cb16058d083af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data:
+  - key: Text
+    type: 2
+    gameObject: {fileID: 2067390088}
+  - key: TestText
+    type: 2
+    gameObject: {fileID: 1763771706}
+  - key: Image
+    type: 5
+    gameObject: {fileID: 1169796353}
+  SavePath: UI/UISetting/View/UISettingElements.lua
 --- !u!1 &1763771706
 GameObject:
   m_ObjectHideFlags: 0
