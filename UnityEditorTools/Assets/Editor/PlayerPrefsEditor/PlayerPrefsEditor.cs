@@ -20,6 +20,7 @@ public class PlayerPrefsEditor : EditorWindow
     [MenuItem("Tools/PlayerPrefs Editor _F6")]
     public static void ShowWindow()
     {
+        PlayerPrefs.SetInt("test",1);
         if (prefsEditor == null)
         {
             prefsEditor = GetWindow<PlayerPrefsEditor>();
@@ -171,6 +172,11 @@ public class PlayerPrefsEditor : EditorWindow
 
     private void DrawItem(PlayerPrefPair pref)
     {
+        var colorTemp = GUI.color;
+        if (pref.focus)
+        {
+            GUI.color = Color.magenta;
+        }
         GUILayout.BeginHorizontal();
         string keyTemp = GUILayout.TextArea(pref.Key, GUILayout.Width(200));
         if (!string.Equals(keyTemp, pref.Key))
@@ -209,7 +215,14 @@ public class PlayerPrefsEditor : EditorWindow
         {
             pref.Value = JsonFormatter.FromatOrCompress(pref.Value);
         }
-
+         
+        var frontVal = pref.focus;
+        pref.focus = GUILayout.Toggle(frontVal, "", GUILayout.Width(15));
+        if (pref.focus != frontVal)
+        {
+            EditorPrefs.SetBool(pref.Key, pref.focus);
+        }
+        GUI.color = colorTemp;
         GUILayout.EndHorizontal();
     }
 

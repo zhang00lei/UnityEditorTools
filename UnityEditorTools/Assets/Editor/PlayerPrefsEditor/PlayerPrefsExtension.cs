@@ -17,6 +17,8 @@ namespace ETEditor
 
         //0 int  1 float  2 string
         public int type;
+
+        public bool focus;
     }
 
     public class PlayerPrefsExtension
@@ -66,7 +68,10 @@ namespace ETEditor
                         }
 
                         tempPlayerPrefs[i] = new PlayerPrefPair
-                            {Key = pair.Key, Value = pair.Value.ToString(), type = tempType};
+                        {
+                            Key = pair.Key, Value = pair.Value.ToString(), type = tempType,
+                            focus = EditorPrefs.GetBool(pair.Key, false)
+                        };
 
                         i++;
                     }
@@ -137,7 +142,10 @@ namespace ETEditor
 
                         // Assign the key and value into the respective record in our output array
                         tempPlayerPrefs[i] = new PlayerPrefPair
-                            {Key = key, Value = ambiguousValue.ToString(), type = tempType};
+                        {
+                            Key = key, Value = ambiguousValue.ToString(), type = tempType,
+                            focus = EditorPrefs.GetBool(key, false)
+                        };
                         i++;
                     }
 
