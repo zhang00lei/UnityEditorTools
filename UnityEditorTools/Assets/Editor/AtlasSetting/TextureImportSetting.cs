@@ -11,29 +11,8 @@ public class TextureImportSetting : AssetPostprocessor
 
     private static readonly int[] MaxSizes = {32, 64, 128, 256, 512, 1024, 2048, 4096, 8192};
 
-    private struct TextureImporterInfo
-    {
-        public readonly TextureImporterFormat TextureImporterFormat;
-        public readonly string PackingTag;
-
-        public TextureImporterInfo(TextureImporterFormat formatInfo, string packingTag)
-        {
-            TextureImporterFormat = formatInfo;
-            PackingTag = packingTag;
-        }
-    }
-
-    /// <summary>
-    /// 设置对应目录下的贴图压缩格式、图集名称
-    /// </summary>
-    private readonly Dictionary<string, TextureImporterInfo> _textureImporterFormatsDict =
-        new Dictionary<string, TextureImporterInfo>
-        {
-            {"Game", new TextureImporterInfo(TextureImporterFormat.ASTC_RGBA_6x6, "Game")},
-            {"Comm", new TextureImporterInfo(TextureImporterFormat.ASTC_RGBA_6x6, "Comm")},
-        };
-
     private static readonly string DEFAULTS_KEY = "DEFAULTS_DONE";
+
     private static readonly uint DEFAULTS_VERSION = 2;
 
     private bool IsAssetProcessed
@@ -57,7 +36,12 @@ public class TextureImportSetting : AssetPostprocessor
         {
             return;
         }
-
+        
+        if (assetPath.IndexOf("Bundle", StringComparison.Ordinal) < 0)
+        {
+            return;
+        }
+        
         if (IsAssetProcessed)
         {
             return;
@@ -69,12 +53,7 @@ public class TextureImportSetting : AssetPostprocessor
         {
             return;
         }
-
-        if (assetPath.IndexOf("AssetsPackage", StringComparison.Ordinal) < 0)
-        {
-            return;
-        }
-
+        
         TextureImporter textureImporter = (TextureImporter) assetImporter;
         if (textureImporter == null)
         {
@@ -92,22 +71,37 @@ public class TextureImportSetting : AssetPostprocessor
 
         textureImporter.mipmapEnabled = false;
         int maxTextureSize = GetMaxSize(Mathf.Max(width, height));
-        string dirName = new DirectoryInfo(Path.GetDirectoryName(assetPath)).Name;
-
-        TextureImporterPlatformSettings textureImporterPlatformSettings =
-            GetTextureImporterPlatformSettings(maxTextureSize, dirName);
-        textureImporter.SetPlatformTextureSettings(textureImporterPlatformSettings);
-        if (_textureImporterFormatsDict.ContainsKey(dirName))
+        string assetDirPath = Path.GetDirectoryName(assetPath).Replace("\\", "/");
+        assetDirPath = assetDirPath.Replace("Assets/Bundle/", string.Empty);
+        AtlasInfo atlasInfo = AtlasSettingTools.GetAtlasInfo(assetDirPath);
+        TextureImporterPlatformSettings textureImporterPlatformSettings;
+        if (atlasInfo != null)
         {
-            textureImporter.spritePackingTag = _textureImporterFormatsDict[dirName].PackingTag;
+            textureImporter.spritePackingTag = atlasInfo.atlasName;
+            textureImporterPlatformSettings =
+                GetTextureImporterPlatformSettings("Android", atlasInfo.androidCompressType, maxTextureSize);
+            textureImporter.SetPlatformTextureSettings(textureImporterPlatformSettings);
+            textureImporterPlatformSettings =
+                GetTextureImporterPlatformSettings("iPhone", atlasInfo.iosCompressType, maxTextureSize);
+            textureImporter.SetPlatformTextureSettings(textureImporterPlatformSettings);
+            textureImporter.SaveAndReimport();
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
         }
-
-        textureImporter.SaveAndReimport();
-        AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        else
+        {
+            textureImporterPlatformSettings =
+                GetTextureImporterPlatformSettings("Android", TextureImporterFormat.ASTC_6x6, maxTextureSize);
+            textureImporter.SetPlatformTextureSettings(textureImporterPlatformSettings);
+            
+            textureImporterPlatformSettings =
+                GetTextureImporterPlatformSettings("iPhone", TextureImporterFormat.ASTC_6x6, maxTextureSize);
+            textureImporter.SetPlatformTextureSettings(textureImporterPlatformSettings);
+        }
     }
 
-    private TextureImporterPlatformSettings GetTextureImporterPlatformSettings(int size, string dirName)
+    private TextureImporterPlatformSettings GetTextureImporterPlatformSettings(string platformName,
+        TextureImporterFormat formatType, int size)
     {
         TextureImporterPlatformSettings textureImporterPlatformSettings = new TextureImporterPlatformSettings();
         textureImporterPlatformSettings.androidETC2FallbackOverride = AndroidETC2FallbackOverride.UseBuildSettings;
@@ -115,17 +109,7 @@ public class TextureImportSetting : AssetPostprocessor
         textureImporterPlatformSettings.resizeAlgorithm = TextureResizeAlgorithm.Mitchell;
         textureImporterPlatformSettings.overridden = true;
         textureImporterPlatformSettings.compressionQuality = 50;
-#if UNITY_ANDROID
-        textureImporterPlatformSettings.name = "Android";
-#elif UNITY_IOS
-            textureImporterPlatformSettings.name = "iPhone";
-#endif
-        TextureImporterFormat formatType = TextureImporterFormat.ASTC_RGBA_6x6;
-        if (_textureImporterFormatsDict.ContainsKey(dirName))
-        {
-            formatType = _textureImporterFormatsDict[dirName].TextureImporterFormat;
-        }
-
+        textureImporterPlatformSettings.name = platformName;
         textureImporterPlatformSettings.format = formatType;
 
         return textureImporterPlatformSettings;
@@ -161,34 +145,10 @@ public class TextureImportSetting : AssetPostprocessor
         return MaxSizes[index];
     }
 
-#if UNITY_IOS
-        [MenuItem("Assets/FormatIosTexture")]
-        public static void FormatAllIosTexture()
-        {
-            Texture2D[] textures = Selection.GetFiltered<Texture2D>(SelectionMode.DeepAssets);
-            foreach (Texture2D texture2D in textures)
-            {
-                TextureImporter ti = (TextureImporter) TextureImporter.GetAtPath(AssetDatabase.GetAssetPath(texture2D));
-                TextureImporterPlatformSettings androidTip = ti.GetPlatformTextureSettings("Android");
-                TextureImporterPlatformSettings iosTip = new TextureImporterPlatformSettings();
-                iosTip.maxTextureSize = androidTip.maxTextureSize;
-                iosTip.resizeAlgorithm = androidTip.resizeAlgorithm;
-                iosTip.overridden = androidTip.overridden;
-                iosTip.compressionQuality = androidTip.compressionQuality;
-                iosTip.name = "iPhone";
-                iosTip.format = androidTip.format;
-                ti.SetPlatformTextureSettings(iosTip);
-                ti.SaveAndReimport();
-            }
-
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-        }
-#endif
-    [MenuItem("Tools/AutoSetImport")]
+    [MenuItem("Tools/AtlasSetting/AutoSetImport")]
     public static void SetImport()
     {
-        bool autoSetImport = EditorPrefs.GetBool(AutoSetImport);
+        bool autoSetImport = EditorPrefs.GetBool(AutoSetImport, false);
         EditorPrefs.SetBool(AutoSetImport, !autoSetImport);
         Debug.Log("CurrentAutoSetImport:" + !autoSetImport);
     }
