@@ -13,8 +13,6 @@
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/14312415.html
 ### [UGUI创建控件快捷键、控件微调快捷键](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/UGUIEditor)
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/14313618.html
-### [Unity导入贴图自动压缩](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/TextureImportSetting)
-用法参考：https://www.cnblogs.com/Yellow0-0River/p/14271191.html
 ### [查看Editor下PlayerPrefs信息](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/PlayerPrefsEditor)
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/14325826.html
 ### [Unity查找资源引用](https://github.com/blueberryzzz/ReferenceFinder)
@@ -30,3 +28,5 @@
 ### [iOS、Android震动封装](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Script/VibrationUtil)
 ### [UI多语言工具封装](https://github.com/zhang00lei/UnityEditorTools/blob/main/UnityEditorTools/Assets/Script/UITextLocalization.cs)
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/14966725.html
+### [导入图片自动压缩、并设置图集](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/AtlasSetting)
+用法参考：https://www.cnblogs.com/Yellow0-0River/p/16457224.html
