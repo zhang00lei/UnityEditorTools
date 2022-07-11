@@ -30,3 +30,5 @@
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/14966725.html
 ### [导入图片自动压缩、并设置图集](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/AtlasSetting)
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/16457224.html
+### [导入资源，汉字命名转拼音命名](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/ToPinYin)
+用法参考：https://www.cnblogs.com/Yellow0-0River/p/16467228.html
