@@ -32,3 +32,5 @@
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/16457224.html
 ### [导入资源，汉字命名转拼音命名](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/ToPinYin)
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/16467228.html
+### [Gameframework框架事件系统，引用池系统](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Script/GameFramework)
+用法参考：https://www.cnblogs.com/Yellow0-0River/p/16583007.html
