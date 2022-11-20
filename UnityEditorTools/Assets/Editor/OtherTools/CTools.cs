@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 using UnityEditor;
+using UnityEngine;
+using Object = System.Object;
 
 public static class CTools
 {
