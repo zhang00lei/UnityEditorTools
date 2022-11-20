@@ -1,10 +1,11 @@
 # Unity编辑器工具及开发工具整理
-##### 注：大部分代码在Editor目录下，第三方扩展工具在Tools目录下。在win unity 2019.3.10f1版本下开发测试。
+##### 注：大部分代码在Editor目录下，第三方扩展工具在Tools目录下。在win unity 2019.4.21f1版本下开发测试。
 ### [其他编辑器小工具](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/OtherTools)
 1. 一键启动、停止unity编辑器
 2. 清空Console日志
-3. 导入spin2d资源，自动设置文件后缀   
-4. 删除空目录([参考这里](https://networm.me/2013/05/23/remove-empty-directories/))
+3. 从fbx文件中导出动画   
+4. 导入spin2d资源，自动设置文件后缀   
+5. 删除空目录([参考这里](https://networm.me/2013/05/23/remove-empty-directories/))
 ### [TortoiseGit提交工具](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/TortoiseGit)
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/14271390.html
 ### [获取Git提交日志](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/GitLog)

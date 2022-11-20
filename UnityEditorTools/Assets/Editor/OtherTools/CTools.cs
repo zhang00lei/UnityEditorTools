@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 using UnityEditor;
+using UnityEngine;
+using Object = System.Object;
 
 public static class CTools
 {
@@ -22,5 +25,36 @@ public static class CTools
 
         MethodInfo method = type.GetMethod("Clear");
         method.Invoke(new object(), null);
+    }
+    
+    [MenuItem("Assets/ExportAnimFromFBX")]
+    private static void GetFiltered()
+    {
+        UnityEngine.Object[] objects = Selection.GetFiltered(typeof(Object), SelectionMode.DeepAssets);
+        foreach (UnityEngine.Object asset in objects)
+        {
+            if (!AssetDatabase.GetAssetPath(asset).ToUpper().EndsWith(".FBX"))
+            {
+                continue;
+            }
+
+            UnityEngine.Object[] assetTemp = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(asset));
+            for (var i = 0; i < assetTemp.Length; i++)
+            {
+                if (!(assetTemp[i] is AnimationClip))
+                {
+                    continue;
+                }
+
+                AnimationClip fbxAnim = assetTemp[i] as AnimationClip;
+                AnimationClip animationClip = new AnimationClip();
+                EditorUtility.CopySerialized(fbxAnim, animationClip);
+                string path = AssetDatabase.GetAssetPath(asset);
+                path = Path.GetDirectoryName(path);
+                AssetDatabase.CreateAsset(animationClip, Path.Combine(path, $"{fbxAnim.name}.anim"));
+            }
+        }
+
+        AssetDatabase.Refresh();
     }
 }
