@@ -35,4 +35,4 @@
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/16467228.html
 ### [Gameframework框架事件系统，引用池系统](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Script/GameFramework)
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/16583007.html
-### 易信通解密
+### 易赛通解密
