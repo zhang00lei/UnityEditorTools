@@ -37,3 +37,5 @@
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/16583007.html
 ### [易赛通解密](https://github.com/zhang00lei/UnityEditorTools/blob/main/UnityEditorTools/Assets/Editor/Unlock/Unlock.cs)
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/17022262.html
+### [文字转音频](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/SpeakToAudio)
+用法参考：https://www.cnblogs.com/Yellow0-0River/p/17151691.html
