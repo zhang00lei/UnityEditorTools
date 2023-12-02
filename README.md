@@ -35,5 +35,5 @@
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/16467228.html
 ### [Gameframework框架事件系统，引用池系统](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Script/GameFramework)
 用法参考：https://www.cnblogs.com/Yellow0-0River/p/16583007.html
-### [文字转音频](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Editor/SpeakToAudio)
-用法参考：https://www.cnblogs.com/Yellow0-0River/p/17151691.html
+### [显示场景中碰撞信息](https://github.com/zhang00lei/UnityEditorTools/tree/main/UnityEditorTools/Assets/Script/SceneCollider)
+用法参考：https://www.cnblogs.com/Yellow0-0River/p/17871826.html
